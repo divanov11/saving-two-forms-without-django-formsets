@@ -1,0 +1,48 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<h3>Update Customer</h3>
+
+<form id="myForm">
+	{% csrf_token %}
+	{{customerform}}
+	<div id="products">
+		
+	</div>
+	<input type="submit" />
+</form>
+
+<hr>
+<button id="add-product">Add Product</button>
+<hr>
+
+<table>
+	<tr>
+		<th>Product</th>
+	</tr>
+	{% for product in products %}
+		<tr>
+			<td>{{product}}</td>
+		</tr>
+	{% endfor %}
+</table>
+
+<script>
+	var product = '{{productform}}'
+	var customerID = '{{customer.id}}'
+
+	$('#add-product').on('click', function(){
+		$('#products').append(product)
+	})
+
+	$('#myForm').on('submit', function(e){
+		e.preventDefault()
+		$.ajax({
+			method:"POST",
+			url:'http://127.0.0.1:8000/update/' + customerID + '/',
+			data:$(this).serialize(),
+			success:function(data){
+				location.reload();
+			}
+		})
+	})
+</script>

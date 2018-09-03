@@ -1,0 +1,38 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<h3>Create Customer</h3>
+
+<form id="myForm">
+	{% csrf_token %}
+	{{customerform}}
+	<hr>
+	<div id="products">
+		<h5>Customer Products</h5>
+		{{productform}}
+	</div>
+	<br>
+	<p id="add-product">Add Product</p>
+	<br>
+	<input type="submit" />
+</form>
+
+<script>
+	var product = '{{productform}}'
+
+	$('#add-product').on('click', function(){
+		$('#products').append(product)
+	})
+
+	$('#myForm').on('submit', function(e){
+		e.preventDefault()
+		$.ajax({
+			method:"POST",
+			url:'http://127.0.0.1:8000/',
+			data:$(this).serialize(),
+			success:function(data){
+				location.reload();
+			}
+		})
+	})
+</script>
+
